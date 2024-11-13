@@ -9,16 +9,22 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class SuccessResponseInterceptor<T>
-  implements NestInterceptor<T, { payload: T }>
+  implements
+    NestInterceptor<T, { request: string; payload: T; count?: number }>
 {
   intercept(
     context: ExecutionContext,
     next: CallHandler,
-  ): Observable<{ payload: T }> {
+  ): Observable<{ request: string; payload: T; count?: number }> {
     const request = context.switchToHttp().getRequest()?.url;
 
     return next.handle().pipe(
-      map((data) => ({ request, payload: data })), // 응답 데이터를 payload 형태로 변환
+      map((data) => {
+        if (data instanceof Array) {
+          return { request, payload: data as T, count: data.length };
+        }
+        return { request, payload: data };
+      }),
     );
   }
 }
