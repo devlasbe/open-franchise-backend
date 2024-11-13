@@ -6,10 +6,10 @@ import {
   OpenApiResponseDto,
 } from './dto/openApi.dto';
 import { ConfigService } from '@nestjs/config';
-import { Franchise } from 'src/franchise/entities/franchise.entity';
 import { Statistic } from 'src/statistic/entities/statistic.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
+import { Brand } from 'src/brand/entities/brand.entity';
 
 @Injectable()
 export class OpenApiService {
@@ -56,26 +56,26 @@ export class OpenApiService {
       },
     );
 
-    const franchiseList = new Array<Franchise>();
+    const brandList = new Array<Brand>();
     const statisticsList = new Array<Statistic>();
 
     response.data.items.forEach((item) => {
       const { brandNm, corpNm, indutyLclasNm, indutyMlsfcNm, ...rest } = item;
-      franchiseList.push({ brandNm, corpNm, indutyLclasNm, indutyMlsfcNm });
+      brandList.push({ brandNm, corpNm, indutyLclasNm, indutyMlsfcNm });
       statisticsList.push({ brandNm, corpNm, ...rest });
     });
 
     if (!response?.data?.items.length)
       throw new HttpException('공공데이터가 없습니다.', 404);
 
-    await this.prisma.franchaise.createMany({
-      data: franchiseList,
+    await this.prisma.brand.createMany({
+      data: brandList,
       skipDuplicates: true,
     });
-    await this.prisma.statistic.createMany({
-      data: statisticsList,
-      skipDuplicates: true,
-    });
+    // await this.prisma.statistic.createMany({
+    //   data: statisticsList,
+    //   skipDuplicates: true,
+    // });
 
     return response.data;
   }

@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Franchaise {
+model Brand {
   brandNm String @id  @map("brand_nm")
   corpNm String @map("corp_nm")
   indutyLclasNm String @map("induty_lclas_nm")

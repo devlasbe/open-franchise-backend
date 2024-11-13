@@ -8,7 +8,7 @@ export class OpenApiController {
 
   @Get('statistic')
   async statistic() {
-    const params = { numOfRows: 1, pageNo: 1, yr: 2024 };
+    const params = { numOfRows: 1000, pageNo: 1, yr: 2021 };
     await this.openApiService.insertAllData(params, () =>
       this.openApiService.callStatistic(params),
     );
