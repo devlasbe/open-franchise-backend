@@ -1,34 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { StatisticService } from './statistic.service';
-import { CreateStatisticDto } from './dto/create-statistic.dto';
-import { UpdateStatisticDto } from './dto/update-statistic.dto';
+import { ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import { TypeUtil } from 'src/common/utils/type.util';
+import { Statistic } from './entities/statistic.entity';
 
 @Controller('statistic')
 export class StatisticController {
   constructor(private readonly statisticService: StatisticService) {}
 
-  @Post()
-  create(@Body() createStatisticDto: CreateStatisticDto) {
-    return this.statisticService.create(createStatisticDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.statisticService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.statisticService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStatisticDto: UpdateStatisticDto) {
-    return this.statisticService.update(+id, updateStatisticDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.statisticService.remove(+id);
+  @Get(':name')
+  @ApiParam({ name: 'name', type: String, description: '브랜드 명' })
+  @ApiOkResponse({
+    description: '브랜드 이름에 해당하는 모든 연도의 매출 정보 리스트',
+    type: () => TypeUtil.getSuccessResponseList(Statistic),
+  })
+  findAll(@Param('name') name: string) {
+    return this.statisticService.findAll(name);
   }
 }
