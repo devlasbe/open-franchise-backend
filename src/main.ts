@@ -3,13 +3,23 @@ import { AppModule } from './app.module';
 import { ErrorResponseInterceptor } from './common/interceptors/error-response/error-response.interceptor';
 import { SuccessResponseInterceptor } from './common/interceptors/success-response/success-response.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.setGlobalPrefix('api');
+
   app.useGlobalInterceptors(new ErrorResponseInterceptor());
   app.useGlobalInterceptors(new SuccessResponseInterceptor());
 
-  // Swagger 설정
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
+  );
+
   const options = new DocumentBuilder()
     .setTitle('Open Franchise API List')
     .setDescription('Open Franchise API List')
@@ -17,7 +27,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document); // Swagger UI를 사용할 URL
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
 }
