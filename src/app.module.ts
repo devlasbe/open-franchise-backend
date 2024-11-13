@@ -8,6 +8,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { HttpModule } from '@nestjs/axios';
 import { CategoryModule } from './categories/category.module';
 import { BrandModule } from './brands/brand.module';
+import { StartupsModule } from './startups/startups.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { BrandModule } from './brands/brand.module';
     StatisticModule,
     CategoryModule,
     BrandModule,
+    StartupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
