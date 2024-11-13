@@ -13,10 +13,8 @@ export class ErrorResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((error) => {
-        console.log('interceptor', error);
         // 예외가 HttpException인 경우
         if (error.response) {
-          console.log(error.response);
           const statusCode = error.getStatus();
           const message = error.message;
           const handler = context.getHandler().name;
@@ -34,7 +32,6 @@ export class ErrorResponseInterceptor implements NestInterceptor {
               ),
           );
         }
-        console.log('exception');
         return throwError(
           () =>
             new HttpException(

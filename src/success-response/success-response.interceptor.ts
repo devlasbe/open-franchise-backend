@@ -15,7 +15,6 @@ export class SuccessResponseInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<{ payload: T }> {
-    console.log(context.getArgs());
     const request = context.switchToHttp().getRequest()?.url;
 
     return next.handle().pipe(
