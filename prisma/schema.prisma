@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Franchaise {
+  brandNm String @id  @map("brand_nm")
+  corpNm String @map("corp_nm")
+  indutyLclasNm String @map("induty_lclas_nm")
+  indutyMlsfcNm String @map("induty_mclas_nm")
+
+  @@index([brandNm],name:"brand_name_index")
+}
+
+model Statistic {
+  // 브랜드명
+  brandNm String @map("brand_nm")
+  // 법인명
+  corpNm String @map("corp_nm")
+  //기준년도
+  yr String
+  // 가맹점수
+  frcsCnt Int @map("frcs_cnt")
+  // 신규가맹점등록수
+  newFrcsRgsCnt Int @map("new_frcs_rgs_cnt")
+  //계약종료수
+  ctrtEndCnt Int @map("ctrt_end_cnt")
+  // 계약해지수
+  ctrtCncltnCnt Int @map("ctrt_cncltn_cnt")
+  // 명의변경수
+  nmChgCnt Int @map("nm_chg_cnt")
+  // 평균매출금액
+  avrgSlsAmt Int @map("avrg_sls_amt")
+  // 면적단위평균매출금액
+  arUnitAvrgSlsAmt Int @map("ar_unit_avrg_sls_amt")
+
+  @@id([brandNm, yr])
+  @@index([brandNm,yr], name:"brand_name_year_index")
+}
+
+model Startup {
+  // 브랜드명
+  brandNm String @id @map("brand_nm")
+  // 법인명
+  corpNm String  @map("corp_nm")
+  // 기준년도
+  yr String
+  // 업종대분류명
+  indutyLclasNm String @map("induty_lclas_nm")
+  // 업종중분류명
+  indutyMlsfcNm String @map("induty_mclas_nm")
+  // 가맹금액
+  jngBzmnJngAmt Int @map("jng_bzmn_jng_amt")
+  // 교육금액
+  jngBzmnEduAmt Int @map("jng_bzmn_edu_amt")
+  // 기타금액
+  jngBzmnEtcAmt Int @map("jng_bzmn_etc_amt")
+  // 보증금액
+  jngBzmnAssrncAmt Int @map("jng_bzmn_assrnc_amt")
+  // 합계금액
+  smtnAmt Int @map("smtn_amt")
+
+  @@index([brandNm,yr],name:"start_up_brand_name_year_index")
+}
