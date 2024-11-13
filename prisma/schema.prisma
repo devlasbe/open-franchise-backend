@@ -16,6 +16,13 @@ model Franchaise {
   @@index([brandNm],name:"brand_name_index")
 }
 
+model Category {
+  indutyLclasNm String @map("induty_lclas_nm")
+  indutyMlsfcNm String @map("induty_mclas_nm")
+
+  @@id([indutyLclasNm,indutyMlsfcNm])
+}
+
 model Statistic {
   // 브랜드명
   brandNm String @map("brand_nm")
