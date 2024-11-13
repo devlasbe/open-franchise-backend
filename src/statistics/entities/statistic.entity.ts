@@ -1,43 +1,45 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
 export class Statistic {
-  // 브랜드명
   @IsString()
+  @ApiProperty({ description: '브랜드명' })
   brandNm: string;
 
-  // 법인명
   @IsString()
+  @ApiProperty({ description: '법인명' })
   corpNm: string;
 
-  //기준년도
   @IsString()
+  @ApiProperty({ description: '기준년도' })
   yr: string;
 
-  // 가맹점수
   @IsNumber()
+  @ApiProperty({ description: '가맹점수' })
   frcsCnt: number;
 
-  // 신규가맹점등록수
   @IsNumber()
+  @ApiProperty({ description: '신규가맹점등록수' })
   newFrcsRgsCnt: number;
 
-  //계약종료수
   @IsNumber()
+  @ApiProperty({ description: '계약종료수' })
   ctrtEndCnt: number;
 
   // 계약해지수
   @IsNumber()
+  @ApiProperty({ description: '계약해지수' })
   ctrtCncltnCnt: number;
 
-  // 명의변경수
   @IsNumber()
+  @ApiProperty({ description: '명의변경수' })
   nmChgCnt: number;
 
-  // 평균매출금액
   @IsNumber()
+  @ApiProperty({ description: '평균매출금액' })
   avrgSlsAmt: number;
 
-  // 면적단위평균매출금액
   @IsNumber()
+  @ApiProperty({ description: '면적단위평균매출금액' })
   arUnitAvrgSlsAmt: number;
 }
