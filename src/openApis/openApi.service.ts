@@ -6,10 +6,10 @@ import {
   OpenApiResponseDto,
 } from './dto/openApi.dto';
 import { ConfigService } from '@nestjs/config';
-import { Statistic } from 'src/statistic/entities/statistic.entity';
+import { Statistic } from 'src/statistics/entities/statistic.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
-import { Brand } from 'src/brand/entities/brand.entity';
+import { Brand } from 'src/brands/entities/brand.entity';
 
 @Injectable()
 export class OpenApiService {

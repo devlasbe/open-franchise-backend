@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ErrorResponseInterceptor } from './error-response/error-response.interceptor';
-import { SuccessResponseInterceptor } from './success-response/success-response.interceptor';
+import { ErrorResponseInterceptor } from './common/interceptors/error-response/error-response.interceptor';
+import { SuccessResponseInterceptor } from './common/interceptors/success-response/success-response.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {

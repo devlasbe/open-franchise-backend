@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OpenApiModule } from './openApi/openApi.module';
+import { OpenApiModule } from './openApis/openApi.module';
 import { ConfigModule } from '@nestjs/config';
-import { StatisticModule } from './statistic/statistic.module';
+import { StatisticModule } from './statistics/statistic.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { HttpModule } from '@nestjs/axios';
-import { CategoryModule } from './category/category.module';
-import { BrandModule } from './brand/brand.module';
+import { CategoryModule } from './categories/category.module';
+import { BrandModule } from './brands/brand.module';
 
 @Module({
   imports: [
