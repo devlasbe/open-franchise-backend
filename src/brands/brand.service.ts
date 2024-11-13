@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { GetBrandListReq } from './dto/brand.dto';
 
 @Injectable()
 export class BrandService {
@@ -9,16 +10,19 @@ export class BrandService {
     return this.prisma.brand.findUnique({ where: { brandNm } });
   }
 
-  findByFilter(brandNm?: string, category?: string) {
+  findByFilter({ pageNo, pageSize, category, name }: GetBrandListReq) {
     const buildWhereQuery = () => {
       const where: any = {};
-      if (brandNm) where.brandNm = { contains: brandNm };
+      if (name) where.brandNm = { contains: name };
       if (category) where.indutyMlsfcNm = category;
       return where;
     };
     const where = buildWhereQuery();
-    console.log(brandNm, category, where);
-    const result = this.prisma.brand.findMany({ where });
+    const result = this.prisma.brand.findMany({
+      skip: (pageNo - 1) * pageSize,
+      take: pageSize,
+      where,
+    });
     return result;
   }
 

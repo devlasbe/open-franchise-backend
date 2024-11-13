@@ -3,20 +3,19 @@ import { BrandService } from './brand.service';
 import { ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { Brand } from './entities/brand.entity';
 import { TypeUtil } from 'src/common/utils/type.util';
+import { GetBrandListReq } from './dto/brand.dto';
 
 @Controller('brand')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
   @Get()
-  @ApiQuery({ name: 'name', required: false })
-  @ApiQuery({ name: 'category', required: false })
   @ApiOkResponse({
     description: '브랜드 리스트',
     type: () => TypeUtil.getSuccessResponseList(Brand),
   })
-  findAll(@Query('name') name?: string, @Query('category') category?: string) {
-    return this.brandService.findByFilter(name, category);
+  findAll(@Query() query: GetBrandListReq) {
+    return this.brandService.findByFilter(query);
   }
 
   @Get('/:name')
