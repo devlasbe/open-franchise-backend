@@ -1,8 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { StartupsService } from './startups.service';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { TypeUtil } from 'src/common/utils/type.util';
-import { Startup } from './entities/startup.entity';
+import { GetStartupRes } from './dto/startup.dto';
 
 @Controller('startups')
 export class StartupsController {
@@ -11,7 +10,7 @@ export class StartupsController {
   @Get(':name')
   @ApiOkResponse({
     description: '브랜드 이름에 해당하는 창업 금액 정보',
-    type: () => TypeUtil.getSuccessResponse(Startup),
+    type: GetStartupRes,
   })
   findOne(@Param('name') name: string) {
     return this.startupsService.findOne(name);

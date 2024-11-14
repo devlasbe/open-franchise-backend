@@ -1,8 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { Category } from './entities/category.entity';
-import { TypeUtil } from 'src/common/utils/type.util';
+import { GetCategoryListRes } from './dto/category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -11,7 +10,7 @@ export class CategoryController {
   @Get()
   @ApiOkResponse({
     description: '카테고리 전체 리스트',
-    type: () => TypeUtil.getSuccessResponseList(Category),
+    type: GetCategoryListRes,
   })
   findAll() {
     return this.categoryService.findAll();

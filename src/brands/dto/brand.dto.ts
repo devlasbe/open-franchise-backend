@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { PagenationRequest } from 'src/common/dto/pagenation.dto';
+import { TypeUtil } from 'src/common/utils/type.util';
+import { Brand } from '../entities/brand.entity';
 
 export class GetBrandListReq extends PagenationRequest {
   @IsString()
@@ -13,3 +15,6 @@ export class GetBrandListReq extends PagenationRequest {
   @ApiProperty({ description: '카테고리', required: false })
   category?: string;
 }
+
+export class GetBrandRes extends TypeUtil.getSuccessResponse(Brand) {}
+export class GetBrandListRes extends TypeUtil.getSuccessResponseList(Brand) {}

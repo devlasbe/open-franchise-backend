@@ -20,14 +20,18 @@ async function bootstrap() {
     }),
   );
 
+  /* Swagger Setting */
   const options = new DocumentBuilder()
     .setTitle('Open Franchise API List')
     .setDescription('Open Franchise API List')
     .setVersion('1.0')
     .build();
-
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('swagger', app, document);
+  app.getHttpAdapter().get('/swagger-json', (req, res) => {
+    res.json(document);
+  });
+  /* Swagger Setting End */
 
   await app.listen(process.env.PORT ?? 3000);
 }
