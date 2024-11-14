@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { BrandService } from './brand.service';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiExtraModels, ApiOkResponse } from '@nestjs/swagger';
 import { GetBrandListReq, GetBrandListRes, GetBrandRes } from './dto/brand.dto';
 
 @Controller('brand')
@@ -8,6 +8,7 @@ export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
   @Get()
+  @ApiExtraModels(GetBrandListReq)
   @ApiOkResponse({
     description: '브랜드 리스트',
     type: GetBrandListRes,
