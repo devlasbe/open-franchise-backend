@@ -1,7 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { StatisticService } from './statistic.service';
-import { ApiOkResponse, ApiParam } from '@nestjs/swagger';
-import { GetStatisticListRes } from './dto/statistic.dto';
+import { ApiExtraModels, ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import {
+  GetStatisticByFilterReq,
+  GetStatisticListRes,
+} from './dto/statistic.dto';
 
 @Controller('statistic')
 export class StatisticController {
@@ -15,5 +18,14 @@ export class StatisticController {
   })
   findAll(@Param('name') name: string) {
     return this.statisticService.findAll(name);
+  }
+  @Get()
+  @ApiExtraModels(GetStatisticByFilterReq)
+  @ApiOkResponse({
+    description: '필터에 해당하는 매출 정보 리스트',
+    type: GetStatisticListRes,
+  })
+  findByFilter(@Query() query: GetStatisticByFilterReq) {
+    return this.statisticService.findByFilter(query);
   }
 }

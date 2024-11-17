@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PagenationRequest {
   @IsNumber()
@@ -12,4 +12,20 @@ export class PagenationRequest {
   @Type(() => Number)
   @ApiProperty({ description: '가져올 데이터 수', example: 10 })
   pageSize: number;
+
+  @IsString()
+  @IsOptional()
+  @Type(() => String)
+  @ApiProperty({ description: '정렬할 컬럼명', required: false })
+  orderCol?: string;
+
+  @IsString()
+  @IsOptional()
+  @Type(() => String)
+  @ApiProperty({
+    description: '정렬 방법',
+    example: 'asc | desc',
+    required: false,
+  })
+  orderSort?: 'asc' | 'desc';
 }
