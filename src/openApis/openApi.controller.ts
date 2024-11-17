@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { OpenApiService } from './openApi.service';
 import { AxiosError } from 'axios';
 
@@ -7,19 +7,16 @@ export class OpenApiController {
   constructor(private readonly openApiService: OpenApiService) {}
 
   @Get('statistic')
-  async statistic() {
-    const params = { numOfRows: 1000, pageNo: 1, yr: 2021 };
-    await this.openApiService.insertAllData(params, () =>
-      this.openApiService.callStatistic(params),
-    );
+  async statistic(@Query('yr') yr: number) {
+    const params = { numOfRows: 1000, pageNo: 1, yr: yr };
+    await this.openApiService.callStatistic(params);
     return { message: '성공' };
   }
 
   @Get('startup')
-  async startup() {
+  async startup(@Query('yr') yr: number) {
     const numOfRows = 1000;
     let pageNo = 1;
-    const yr = 2023;
     try {
       while (true) {
         console.log((pageNo - 1) * numOfRows + 1 + ' ~ ' + pageNo * numOfRows);

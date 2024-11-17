@@ -14,6 +14,14 @@ export class Statistic {
   @ApiProperty({ description: '기준년도' })
   yr: string;
 
+  @IsString()
+  @ApiProperty({ description: '업종대분류명' })
+  indutyLclasNm: string;
+
+  @IsString()
+  @ApiProperty({ description: '업종중분류명' })
+  indutyMlsfcNm: string;
+
   @IsNumber()
   @ApiProperty({ description: '가맹점수' })
   frcsCnt: number;

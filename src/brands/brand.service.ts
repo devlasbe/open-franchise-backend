@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetBrandListReq } from './dto/brand.dto';
 
+const escapeRegex = (str: string) => str.replace(/\//g, '\\/');
+
 @Injectable()
 export class BrandService {
   constructor(private readonly prisma: PrismaService) {}
@@ -13,8 +15,8 @@ export class BrandService {
   findByFilter({ pageNo, pageSize, category, name }: GetBrandListReq) {
     const buildWhereQuery = () => {
       const where: any = {};
-      if (name) where.brandNm = { contains: name };
-      if (category) where.indutyMlsfcNm = category;
+      if (name) where.brandNm = { contains: name, mode: 'insensitive' };
+      if (category) where.indutyMlsfcNm = { contains: escapeRegex(category) };
       return where;
     };
     const where = buildWhereQuery();

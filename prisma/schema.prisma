@@ -28,6 +28,10 @@ model Statistic {
   brandNm String @map("brand_nm")
   // 법인명
   corpNm String @map("corp_nm")
+  // 대분류
+  indutyLclasNm String @map("induty_lclas_nm")
+  // 중분류
+  indutyMlsfcNm String @map("induty_mclas_nm")
   //기준년도
   yr String
   // 가맹점수
@@ -73,3 +77,4 @@ model Startup {
 
   @@index([brandNm,yr],name:"start_up_brand_name_year_index")
 }
+

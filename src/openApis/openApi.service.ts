@@ -25,59 +25,131 @@ export class OpenApiService {
   ) {
     let pageNo = beforePageNo;
     while (true) {
-      console.log((pageNo - 1) * numOfRows + 1 + ' ~ ' + pageNo * numOfRows);
       const response = await api({
         numOfRows,
         pageNo,
         yr,
       });
-      pageNo = pageNo + 1;
       const requestAmount = pageNo * numOfRows;
       const totalCount: number = response?.totalCount ?? 0;
+      console.log(
+        (pageNo - 1) * numOfRows +
+          1 +
+          ' ~ ' +
+          pageNo * numOfRows +
+          'Total Count: ' +
+          totalCount,
+      );
+      pageNo = pageNo + 1;
       if (requestAmount > totalCount) break;
+      await new Promise((resolve) => setTimeout(resolve, 3000));
     }
   }
 
-  async callStatistic({ pageNo, numOfRows, yr }: OpenApiRequestDto) {
+  async callBrand({ pageNo: beforePageNo, numOfRows, yr }: OpenApiRequestDto) {
+    let pageNo = beforePageNo;
+
     const endPoint = this.configService.get<string>(
       'OPENAPI_STATISTIC_ENDPOINT',
     );
     const key = this.configService.get<string>('OPENAPI_KEY');
-    const response = await this.httpService.axiosRef.get<StatisticResponseDto>(
-      endPoint,
-      {
-        params: {
-          resultType: 'json',
-          serviceKey: key,
-          pageNo,
-          numOfRows,
-          yr,
-        },
-      },
+
+    while (true) {
+      const requestAmount = pageNo * numOfRows;
+
+      const response =
+        await this.httpService.axiosRef.get<StatisticResponseDto>(endPoint, {
+          params: {
+            resultType: 'json',
+            serviceKey: key,
+            pageNo,
+            numOfRows,
+            yr,
+          },
+        });
+
+      const totalCount: number = response?.data.totalCount ?? 0;
+
+      const brandList = new Array<Brand>();
+      const statisticsList = new Array<Statistic>();
+
+      response.data.items.forEach((item) => {
+        const { brandNm, corpNm, indutyLclasNm, indutyMlsfcNm, ...rest } = item;
+        brandList.push({ brandNm, corpNm, indutyLclasNm, indutyMlsfcNm });
+        statisticsList.push(item);
+      });
+      if (!response?.data?.items.length)
+        throw new HttpException('공공데이터가 없습니다.', 404);
+
+      const insertBrandResult = await this.prisma.brand.createMany({
+        data: brandList,
+        skipDuplicates: true,
+      });
+      const insertStatisticResult = await this.prisma.statistic.createMany({
+        data: statisticsList,
+        skipDuplicates: true,
+      });
+      console.log(
+        `${(pageNo - 1) * numOfRows + 1}~${pageNo * numOfRows} / total: ${totalCount} / saved brand, statistic: ${insertBrandResult.count} ${insertStatisticResult.count}`,
+      );
+      pageNo = pageNo + 1;
+      if (requestAmount > totalCount) break;
+    }
+  }
+
+  async callStatistic({
+    pageNo: beforePageNo,
+    numOfRows,
+    yr,
+  }: OpenApiRequestDto) {
+    let pageNo = beforePageNo;
+
+    const endPoint = this.configService.get<string>(
+      'OPENAPI_STATISTIC_ENDPOINT',
     );
+    const key = this.configService.get<string>('OPENAPI_KEY');
 
-    const brandList = new Array<Brand>();
-    const statisticsList = new Array<Statistic>();
+    while (true) {
+      const requestAmount = pageNo * numOfRows;
 
-    response.data.items.forEach((item) => {
-      const { brandNm, corpNm, indutyLclasNm, indutyMlsfcNm, ...rest } = item;
-      brandList.push({ brandNm, corpNm, indutyLclasNm, indutyMlsfcNm });
-      statisticsList.push({ brandNm, corpNm, ...rest });
-    });
+      const response =
+        await this.httpService.axiosRef.get<StatisticResponseDto>(endPoint, {
+          params: {
+            resultType: 'json',
+            serviceKey: key,
+            pageNo,
+            numOfRows,
+            yr,
+          },
+        });
 
-    if (!response?.data?.items.length)
-      throw new HttpException('공공데이터가 없습니다.', 404);
+      const totalCount: number = response?.data.totalCount ?? 0;
 
-    await this.prisma.brand.createMany({
-      data: brandList,
-      skipDuplicates: true,
-    });
-    // await this.prisma.statistic.createMany({
-    //   data: statisticsList,
-    //   skipDuplicates: true,
-    // });
+      const brandList = new Array<Brand>();
+      const statisticsList = new Array<Statistic>();
 
-    return response.data;
+      response.data.items.forEach((item) => {
+        const { brandNm, corpNm, indutyLclasNm, indutyMlsfcNm, ...rest } = item;
+        brandList.push({ brandNm, corpNm, indutyLclasNm, indutyMlsfcNm });
+        statisticsList.push(item);
+      });
+      if (!response?.data?.items.length)
+        throw new HttpException('공공데이터가 없습니다.', 404);
+
+      const insertBrandResult = await this.prisma.brand.createMany({
+        data: brandList,
+        skipDuplicates: true,
+      });
+      const insertStatisticResult = await this.prisma.statistic.createMany({
+        data: statisticsList,
+        skipDuplicates: true,
+      });
+      console.log(
+        `${(pageNo - 1) * numOfRows + 1}~${pageNo * numOfRows} / total: ${totalCount} / saved brand, statistic: ${insertBrandResult.count} ${insertStatisticResult.count}`,
+      );
+      pageNo = pageNo + 1;
+      if (requestAmount > totalCount) break;
+    }
   }
 
   async callStartup({ pageNo, numOfRows, yr }: OpenApiRequestDto) {
