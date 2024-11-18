@@ -19,7 +19,7 @@ export class CategoryService {
       new Set(
         response.map(({ brandNm, corpNm, ...rest }) => JSON.stringify(rest)),
       ),
-    ).map((item) => JSON.parse(item));
+    ).map((item: any) => JSON.parse(item));
 
     const result = await this.prisma.category.createMany({
       data: uniqueArray,
