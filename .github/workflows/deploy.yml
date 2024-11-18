@@ -10,6 +10,9 @@ jobs:
     env:
       DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_REPOSITORY }}/${{secrets.DOCKER_IMAGENAME}}:latest
     steps:
+      - name: env test
+        run: echo DOCKER_IMAGE_TAG $DOCKER_IMAGE_TAG
+
       - name: Checkout
         uses: actions/checkout@v3
 
