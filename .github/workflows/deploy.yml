@@ -11,7 +11,7 @@ jobs:
       DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_REPOSITORY }}/${{secrets.DOCKER_IMAGENAME}}:latest
     steps:
       - name: env test
-        run: echo DOCKER_IMAGE_TAG $DOCKER_IMAGE_TAG
+        run: echo "DOCKER_IMAGE_TAG $DOCKER_IMAGE_TAG"
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: $DOCKER_IMAGE_TAG
+          tags: ${{ env.DOCKER_IMAGE_TAG }}
           build-args: |
             VAL_DATABASE_URL=${{secrets.VAL_DATABASE_URL}}
 
@@ -43,7 +43,7 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker pull $DOCKER_IMAGE_TAG
+            docker pull ${{ env.DOCKER_IMAGE_TAG }}
             docker stop ${{secrets.DOCKER_IMAGENAME}} || true
             docker rm ${{secrets.DOCKER_IMAGENAME}} || true
-            docker run -d --restart=always --name ${{secrets.DOCKER_IMAGENAME}} -p 3001:3000 $DOCKER_IMAGE_TAG
+            docker run -d --restart=always --name ${{secrets.DOCKER_IMAGENAME}} -p 3001:3000 ${{ env.DOCKER_IMAGE_TAG }}
