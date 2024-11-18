@@ -14,7 +14,7 @@ FROM base AS builder
 FROM base AS runner
   WORKDIR /app
   RUN npm install -g pm2
-  RUN npm run prisma:generate
   COPY --from=builder /app .
+  RUN npm run prisma:generate
   EXPOSE 3000
   CMD ["npm", "run", "pm2:op"]
