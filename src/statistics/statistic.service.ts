@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GetStatisticByFilterReq } from './dto/statistic.dto';
-import { Statistic } from './entities/statistic.entity';
 
 @Injectable()
 export class StatisticService {
@@ -26,7 +25,6 @@ export class StatisticService {
       if (typeof orderCol) return { [orderCol]: orderSort };
     };
     const orderBy = buildOrderQuery();
-    console.log(orderSort, orderCol, orderBy);
     const result = this.prisma.statistic.findMany({
       skip: (pageNo - 1) * pageSize,
       take: pageSize,

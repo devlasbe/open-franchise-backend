@@ -152,30 +152,47 @@ export class OpenApiService {
     }
   }
 
-  async callStartup({ pageNo, numOfRows, yr }: OpenApiRequestDto) {
+  async callStartup({
+    pageNo: beforePageNo,
+    numOfRows,
+    yr,
+  }: OpenApiRequestDto) {
+    let pageNo = beforePageNo;
+
     const endPoint = this.configService.get<string>('OPENAPI_STARTUP_ENDPOINT');
     const key = this.configService.get<string>('OPENAPI_KEY');
-    const response = await this.httpService.axiosRef.get<StartupResponseDto>(
-      endPoint,
-      {
-        params: {
-          resultType: 'json',
-          serviceKey: key,
-          pageNo,
-          numOfRows,
-          yr,
+
+    while (true) {
+      const requestAmount = pageNo * numOfRows;
+
+      const response = await this.httpService.axiosRef.get<StartupResponseDto>(
+        endPoint,
+        {
+          params: {
+            resultType: 'json',
+            serviceKey: key,
+            pageNo,
+            numOfRows,
+            yr,
+          },
         },
-      },
-    );
-    if (!response?.data?.items.length)
-      throw new HttpException('공공데이터가 없습니다.', 404);
+      );
 
-    await this.prisma.startup.createMany({
-      data: response.data.items,
-      skipDuplicates: true,
-    });
+      const totalCount: number = response?.data.totalCount ?? 0;
 
-    return response.data;
+      if (!response?.data?.items.length)
+        throw new HttpException('공공데이터가 없습니다.', 404);
+
+      const result = await this.prisma.startup.createMany({
+        data: response.data.items,
+        skipDuplicates: true,
+      });
+      console.log(
+        `${(pageNo - 1) * numOfRows + 1}~${pageNo * numOfRows} / total: ${totalCount} / saved ${result.count}`,
+      );
+      pageNo = pageNo + 1;
+      if (requestAmount > totalCount) break;
+    }
   }
 }
 
