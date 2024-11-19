@@ -13,7 +13,7 @@ export class InteriorsController {
     description: '인테리어금액 검색',
     type: GetInteriorRes,
   })
-  @ApiExtraModels(GetHeadReq)
+  @ApiExtraModels(GetInteriorReq)
   findOne(@Query() query: GetInteriorReq) {
     return this.interiorsService.findOne(query);
   }
