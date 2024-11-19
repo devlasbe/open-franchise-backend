@@ -17,6 +17,7 @@ module.exports = {
         PORT: 3000,
         DATABASE_URL: 'VAL_DATABASE_URL',
         OPENAPI_KEY: 'VAL_OPENAPI_KEY',
+        DEFAULT_YEAR: 'VAL_DEFAULT_YEAR',
       },
     },
   ],

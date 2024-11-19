@@ -9,8 +9,10 @@ FROM base AS builder
   COPY . .
   ARG VAL_DATABASE_URL
   ARG VAL_OPENAPI_KEY
+  ARG DEFAULT_YEAR
   RUN sed -i "s|VAL_DATABASE_URL|$VAL_DATABASE_URL|" ecosystem.config.js
   RUN sed -i "s|VAL_OPENAPI_KEY|$VAL_OPENAPI_KEY|" ecosystem.config.js
+  RUN sed -i "s|DEFAULT_YEAR|$DEFAULT_YEAR|" ecosystem.config.js
   RUN pnpm build
 
 FROM base AS runner
