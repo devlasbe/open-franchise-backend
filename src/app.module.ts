@@ -9,6 +9,8 @@ import { HttpModule } from '@nestjs/axios';
 import { CategoryModule } from './categories/category.module';
 import { BrandModule } from './brands/brand.module';
 import { StartupsModule } from './startups/startups.module';
+import { InteriorsModule } from './interiors/interiors.module';
+import { HeadsModule } from './heads/heads.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { StartupsModule } from './startups/startups.module';
     CategoryModule,
     BrandModule,
     StartupsModule,
+    InteriorsModule,
+    HeadsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
