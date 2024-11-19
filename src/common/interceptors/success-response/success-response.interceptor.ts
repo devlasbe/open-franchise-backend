@@ -3,6 +3,7 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,6 +13,8 @@ export class SuccessResponseInterceptor<T>
   implements
     NestInterceptor<T, { request: string; payload: T; count?: number }>
 {
+  private readonly logger = new Logger('😀 Success');
+
   intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -20,6 +23,7 @@ export class SuccessResponseInterceptor<T>
 
     return next.handle().pipe(
       map((data) => {
+        this.logger.log(request, data);
         if (data instanceof Array) {
           return { request, payload: data as T, count: data.length };
         }
