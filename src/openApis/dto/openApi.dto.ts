@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsNumber } from 'class-validator';
+import { Interior } from 'src/interiors/entities/interior.entity';
 
 export class OpenApiRequestDto {
   // 페이지 번호
@@ -84,3 +85,5 @@ interface StartupItem {
 }
 
 export class StartupResponseDto extends OpenApiResponseDto<StartupItem> {}
+
+export class InteriorResponseDto extends OpenApiResponseDto<Interior> {}
