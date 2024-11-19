@@ -78,3 +78,37 @@ model Startup {
   @@index([brandNm,yr],name:"start_up_brand_name_year_index")
 }
 
+model Interior {
+  // 브랜드명
+  brandNm String @map("brand_nm")
+
+  // 화폐단위코드명
+  crrncyUnitCdNm String @map("crrncy_unit_cd_nm")
+  
+  // 가맹사업기준년도
+  jngBizCrtraYr String @map("jng_biz_crtra_yr")
+  
+  // 브랜드관리번호
+  brandMnno String @map("brand_mnno")
+  
+  // 가맹본부관리번호
+  jnghdqrtrsMnno String @map("jnghdqrtrs_mnno")
+  
+  // 업종대분류명
+  indutyLclasNm String @map("induty_lclas_nm")
+  
+  // 업종중분류명
+  indutyMlsfcNm String @map("induty_mlsfc_nm")
+  
+  // 단위면적인테리어금액범위값 (편차 5%)
+  unitArIntrrAmtScopeVal String @map("unit_ar_intrr_amt_scope_val")
+  
+  // 점포기준면적
+  storCrtraAr String @map("stor_crtra_ar")
+  
+  // 인테리어금액범위값 (편차 5%)
+  intrrAmtScopeVal String @map("intrr_amt_scope_val")
+
+  @@id([brandNm,unitArIntrrAmtScopeVal])
+  @@index([brandNm])
+}
