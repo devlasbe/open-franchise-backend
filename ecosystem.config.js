@@ -16,6 +16,7 @@ module.exports = {
         NODE_ENV: 'production',
         PORT: 3000,
         DATABASE_URL: 'VAL_DATABASE_URL',
+        OPENAPI_KEY: 'VAL_OPENAPI_KEY',
       },
     },
   ],
