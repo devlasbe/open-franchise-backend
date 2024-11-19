@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class Head {
-  @ApiProperty({ description: '홈페이지주소' })
+  @ApiProperty({ description: '홈페이지주소', required: false })
   @IsString()
   @IsOptional()
   hmpgUrladr?: string;
@@ -43,11 +43,11 @@ export class Head {
   @IsString()
   corpRgDate: string;
 
-  @ApiProperty({ description: '가맹본부대표전화번호' })
+  @ApiProperty({ description: '가맹본부대표전화번호', required: false })
   @IsString()
   jnghdqrtrsRprsTelno?: string;
 
-  @ApiProperty({ description: '가맹본부대표팩스번호' })
+  @ApiProperty({ description: '가맹본부대표팩스번호', required: false })
   @IsString()
   jnghdqrtrsRprsFxno?: string;
 
@@ -55,15 +55,15 @@ export class Head {
   @IsString()
   jnghdqrtrsRprsvNm: string;
 
-  @ApiProperty({ description: '가맹본부구우편번호' })
+  @ApiProperty({ description: '가맹본부구우편번호', required: false })
   @IsString()
   jnghdqrtrsOzip?: string;
 
-  @ApiProperty({ description: '소재지주소' })
+  @ApiProperty({ description: '소재지주소', required: false })
   @IsString()
   lctnAddr?: string;
 
-  @ApiProperty({ description: '소재지상세주소' })
+  @ApiProperty({ description: '소재지상세주소', required: false })
   @IsString()
   lctnDaddr?: string;
 

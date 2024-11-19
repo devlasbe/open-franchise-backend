@@ -5,5 +5,6 @@ import { HeadsController } from './heads.controller';
 @Module({
   controllers: [HeadsController],
   providers: [HeadsService],
+  exports: [HeadsService],
 })
 export class HeadsModule {}

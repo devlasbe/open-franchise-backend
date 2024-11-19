@@ -3,6 +3,7 @@ import { IsOptional, IsString } from 'class-validator';
 import { PagenationRequest } from 'src/common/dto/pagenation.dto';
 import { TypeUtil } from 'src/common/utils/type.util';
 import { Brand } from '../entities/brand.entity';
+import { Head } from 'src/heads/entities/head.entity';
 
 export class GetBrandListReq extends PagenationRequest {
   @IsString()
@@ -16,5 +17,11 @@ export class GetBrandListReq extends PagenationRequest {
   category?: string;
 }
 
-export class GetBrandRes extends TypeUtil.getSuccessResponse(Brand) {}
+class BrandRes {
+  @ApiProperty({ description: '브랜드 데이터' })
+  brand: Brand;
+  @ApiProperty({ description: '본사 데이터' })
+  head: Head;
+}
+export class GetBrandRes extends TypeUtil.getSuccessResponse(BrandRes) {}
 export class GetBrandListRes extends TypeUtil.getSuccessResponseList(Brand) {}
