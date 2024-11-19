@@ -27,9 +27,9 @@ export class Head {
   @IsString()
   brno: string;
 
-  @ApiProperty({ description: '법인등록번호' })
+  @ApiProperty({ description: '법인등록번호', required: false })
   @IsString()
-  crno: string;
+  crno?: string;
 
   @ApiProperty({ description: '개인법인구분코드 (10: 개인, 11: 법인)' })
   @IsString()

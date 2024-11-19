@@ -15,6 +15,6 @@ export class InteriorsController {
   })
   @ApiExtraModels(GetInteriorReq)
   findOne(@Query() query: GetInteriorReq) {
-    return this.interiorsService.findOne(query);
+    return this.interiorsService.findOne(query.brandMnno);
   }
 }

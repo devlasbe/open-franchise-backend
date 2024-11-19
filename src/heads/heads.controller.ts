@@ -14,6 +14,6 @@ export class HeadsController {
   })
   @ApiExtraModels(GetHeadReq)
   findOne(@Query() query: GetHeadReq) {
-    return this.headsService.findOne(query);
+    return this.headsService.findOne(query.jnghdqrtrsMnno);
   }
 }

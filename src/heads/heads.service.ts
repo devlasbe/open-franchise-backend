@@ -14,6 +14,7 @@ export class HeadsService {
     private readonly httpService: HttpService,
   ) {}
   private key = this.configService.get<string>('OPENAPI_KEY');
+  private year = this.configService.get<string>('DEFAULT_YEAR');
   private endPoint =
     'https://apis.data.go.kr/1130000/FftcJnghdqrtrsGnrlDtl2_Service/getjnghdqrtrsGnlinfo';
 
@@ -21,7 +22,11 @@ export class HeadsService {
     return this.prisma.head.create({ data });
   }
 
-  async findOne(params: GetHeadReq) {
+  async findOne(jnghdqrtrsMnno: string) {
+    const params = {
+      jnghdqrtrsMnno: jnghdqrtrsMnno,
+      jngBizCrtraYr: this.year,
+    };
     const dbResult = await this.prisma.head.findUnique({
       where: { jnghdqrtrsMnno: params.jnghdqrtrsMnno },
     });
@@ -34,7 +39,7 @@ export class HeadsService {
     if (!response) {
       response = await this.findOneByOpenApi({
         ...params,
-        jngBizCrtraYr: +params.jngBizCrtraYr - 1 + '',
+        jngBizCrtraYr: +this.year - 1 + '',
       });
     }
     if (!response) return;
@@ -43,7 +48,7 @@ export class HeadsService {
     return response;
   }
 
-  async findOneByOpenApi(params: GetHeadReq) {
+  async findOneByOpenApi(params: GetHeadReq & { jngBizCrtraYr: string }) {
     try {
       const response = await this.httpService.axiosRef.get<
         OpenApiResponseDto<Head>

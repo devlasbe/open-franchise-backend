@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { GetInteriorReq } from './dto/interior.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
@@ -14,6 +13,7 @@ export class InteriorsService {
     private readonly httpService: HttpService,
   ) {}
   private key = this.configService.get<string>('OPENAPI_KEY');
+  private year = this.configService.get<string>('DEFAULT_YEAR');
   private endPoint =
     'https://apis.data.go.kr/1130000/FftcBrandFrcsIntInfo2_Service/getbrandFrcsBzmnIntrrctinfo';
 
@@ -25,8 +25,12 @@ export class InteriorsService {
     }
   }
 
-  async findOne(params: GetInteriorReq) {
-    const dbResult = await this.prisma.interior.findUnique({
+  async findOne(brandMnno: string) {
+    const params = {
+      brandMnno,
+      jngBizCrtraYr: this.year,
+    };
+    const dbResult = await this.prisma.interior.findFirst({
       where: { brandMnno: params.brandMnno },
     });
     if (dbResult) return dbResult;
@@ -47,7 +51,7 @@ export class InteriorsService {
     return response;
   }
 
-  async findOneByOpenApi(params: GetInteriorReq) {
+  async findOneByOpenApi(params: { jngBizCrtraYr: string; brandMnno: string }) {
     try {
       const response = await this.httpService.axiosRef.get<
         OpenApiResponseDto<Interior>

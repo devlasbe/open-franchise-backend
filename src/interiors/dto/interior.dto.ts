@@ -4,10 +4,6 @@ import { TypeUtil } from 'src/common/utils/type.util';
 import { Interior } from '../entities/interior.entity';
 
 export class GetInteriorReq {
-  @ApiProperty({ description: '가맹사업기준년도' })
-  @IsString()
-  jngBizCrtraYr: string;
-
   @ApiProperty({ description: '브랜드관리번호' })
   @IsString()
   brandMnno: string;
