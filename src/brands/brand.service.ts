@@ -18,6 +18,7 @@ export class BrandService {
 
   async findOne(brandNm: string) {
     const brand = await this.prisma.brand.findUnique({ where: { brandNm } });
+    if (!brand?.jnghdqrtrsMnno) return { brand, head: {} };
     const head = await this.headsService.findOne(brand.jnghdqrtrsMnno);
     return { brand, head };
   }

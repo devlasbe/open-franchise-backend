@@ -28,7 +28,7 @@ export class HeadsService {
       jngBizCrtraYr: this.year,
     };
     const dbResult = await this.prisma.head.findUnique({
-      where: { jnghdqrtrsMnno: params.jnghdqrtrsMnno },
+      where: { jnghdqrtrsMnno },
     });
     if (dbResult) return dbResult;
 

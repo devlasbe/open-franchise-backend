@@ -31,7 +31,7 @@ export class InteriorsService {
       jngBizCrtraYr: this.year,
     };
     const dbResult = await this.prisma.interior.findFirst({
-      where: { brandMnno: params.brandMnno },
+      where: { brandMnno },
     });
     if (dbResult) return dbResult;
 
