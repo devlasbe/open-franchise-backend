@@ -64,7 +64,7 @@ export class InteriorsService {
           ...params,
         },
       });
-      console.log(`Interior OpenApi -> year: ${this.year}`, response);
+      console.log(`Interior OpenApi -> year: ${this.year}`, response?.data);
       const data = response?.data?.items;
       if (data?.length) return data[0];
     } catch (error) {
