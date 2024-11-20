@@ -61,6 +61,7 @@ export class HeadsService {
           ...params,
         },
       });
+      console.log(`Head OpenApi -> year: ${this.year}`, response);
       const data = response?.data?.items;
       if (data?.length) return data[0];
     } catch (error) {

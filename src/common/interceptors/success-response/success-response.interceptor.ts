@@ -23,7 +23,7 @@ export class SuccessResponseInterceptor<T>
 
     return next.handle().pipe(
       map((data) => {
-        this.logger.log(request, data);
+        this.logger.log(request, !!data);
         if (data instanceof Array) {
           return { request, payload: data as T, count: data.length };
         }
