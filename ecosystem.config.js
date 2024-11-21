@@ -1,8 +1,8 @@
 module.exports = {
   apps: [
     {
-      name: 'nestjs-app', // 애플리케이션 이름
-      script: './dist/main.js', // 빌드된 NestJS 애플리케이션의 진입 파일
+      name: 'franchise-backend',
+      script: './dist/main.js',
       instances: '2', // CPU 코어 수만큼 실행
       exec_mode: 'cluster', // 클러스터 모드로 실행
       max_memory_restart: '1000M', // 프로세스의 메모리가 1000MB에 도달하면 reload 실행
