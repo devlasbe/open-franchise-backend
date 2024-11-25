@@ -17,7 +17,10 @@ export class BrandService {
   private year = this.configService.get<string>('DEFAULT_YEAR');
 
   async findOne(brandNm: string) {
-    const brand = await this.prisma.brand.findUnique({ where: { brandNm } });
+    const brand = await this.prisma.brand.findUnique({
+      where: { brandNm },
+      include: { statistics: true },
+    });
     if (!brand?.jnghdqrtrsMnno) return { brand, head: {} };
     const head = await this.headsService.findOne(brand.jnghdqrtrsMnno);
     return { brand, head };
@@ -49,6 +52,9 @@ export class BrandService {
       take: pageSize,
       where,
       orderBy,
+      include: {
+        statistics: { take: 1, orderBy: { yr: 'desc' } },
+      },
     });
     return result;
   }

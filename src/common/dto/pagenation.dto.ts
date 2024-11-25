@@ -15,13 +15,11 @@ export class PagenationRequest {
 
   @IsString()
   @IsOptional()
-  @Type(() => String)
   @ApiProperty({ description: '정렬할 컬럼명', required: false })
   orderCol?: string;
 
   @IsString()
   @IsOptional()
-  @Type(() => String)
   @ApiProperty({
     description: '정렬 방법',
     example: 'asc | desc',

@@ -3,15 +3,11 @@ module.exports = {
     {
       name: 'franchise-backend',
       script: './dist/main.js',
-      instances: '2', // CPU 코어 수만큼 실행
-      exec_mode: 'cluster', // 클러스터 모드로 실행
+      exec_mode: 'cluster',
+      instances: '2', // CPU 코어 수
       max_memory_restart: '1000M', // 프로세스의 메모리가 1000MB에 도달하면 reload 실행
-      merge_logs: true, // 클러스터 모드 사용 시 각 클러스터에서 생성되는 로그를 한 파일로 합쳐준다.
+      merge_logs: true, // 클러스터 모드 사용 시 각 클러스터에서 생성되는 로그를 한 파일로 합침
       autorestart: true, // 프로세스 실패 시 자동으로 재시작할지 선택
-      env: {
-        NODE_ENV: 'development',
-        PORT: 3001,
-      },
       env_production: {
         NODE_ENV: 'production',
         PORT: 3000,

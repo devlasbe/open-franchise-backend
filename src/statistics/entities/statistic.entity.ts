@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
+import { Brand } from 'src/brands/entities/brand.entity';
+import { Startup } from 'src/startups/entities/startup.entity';
 
 export class Statistic {
   @IsString()
@@ -50,4 +52,10 @@ export class Statistic {
   @IsNumber()
   @ApiProperty({ description: '면적단위평균매출금액' })
   arUnitAvrgSlsAmt: number;
+
+  @ApiProperty({ description: '브랜드 정보', nullable: true })
+  brand?: Brand;
+
+  @ApiProperty({ description: '창업금액', nullable: true })
+  startup?: Startup;
 }

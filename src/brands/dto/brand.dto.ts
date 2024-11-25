@@ -4,6 +4,7 @@ import { PagenationRequest } from 'src/common/dto/pagenation.dto';
 import { TypeUtil } from 'src/common/utils/type.util';
 import { Brand } from '../entities/brand.entity';
 import { Head } from 'src/heads/entities/head.entity';
+import { Statistic } from 'src/statistics/entities/statistic.entity';
 
 export class GetBrandListReq extends PagenationRequest {
   @IsString()

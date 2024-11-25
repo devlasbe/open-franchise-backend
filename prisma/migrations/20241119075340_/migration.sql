@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Brand" ALTER COLUMN "crno" DROP NOT NULL;

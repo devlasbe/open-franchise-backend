@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Head" ALTER COLUMN "crno" DROP NOT NULL;

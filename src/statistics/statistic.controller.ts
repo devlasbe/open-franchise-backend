@@ -17,7 +17,7 @@ export class StatisticController {
     type: GetStatisticListRes,
   })
   findAll(@Param('name') name: string) {
-    return this.statisticService.findAll(name);
+    return this.statisticService.findByName(name);
   }
   @Get()
   @ApiExtraModels(GetStatisticByFilterReq)
@@ -27,5 +27,10 @@ export class StatisticController {
   })
   findByFilter(@Query() query: GetStatisticByFilterReq) {
     return this.statisticService.findByFilter(query);
+  }
+
+  @Get('rank/get')
+  rank() {
+    return this.statisticService.findRank();
   }
 }

@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Brand {
@@ -31,6 +32,7 @@ model Brand {
   // 주요상품명
   majrGdsNm String? @map("majr_gds_nm")
 
+  statistics Statistic[]
   @@index([brandNm], name: "franchise_brand_year_index")
 }
 
@@ -67,6 +69,8 @@ model Statistic {
   // 면적단위평균매출금액
   arUnitAvrgSlsAmt Int @map("ar_unit_avrg_sls_amt")
 
+  brand Brand? @relation(fields: [brandNm], references: [brandNm])
+  startup Startup? @relation(fields: [brandNm], references: [brandNm], map: "custom_statistic_brand_fk")
   @@id([brandNm, yr])
   @@index([brandNm,yr], name:"brand_name_year_index")
 }
@@ -93,6 +97,7 @@ model Startup {
   // 합계금액
   smtnAmt Int @map("smtn_amt")
 
+  Statistic Statistic[]
   @@index([brandNm,yr],name:"start_up_brand_name_year_index")
 }
 

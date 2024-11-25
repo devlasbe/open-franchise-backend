@@ -64,7 +64,10 @@ export class InteriorsService {
           ...params,
         },
       });
-      console.log(`Interior OpenApi -> year: ${this.year}`, response?.data);
+      console.log(
+        `Interior OpenApi -> year: ${params.jngBizCrtraYr}`,
+        response?.data,
+      );
       const data = response?.data?.items;
       if (data?.length) return data[0];
     } catch (error) {

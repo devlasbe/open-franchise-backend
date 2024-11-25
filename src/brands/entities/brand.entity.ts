@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
+import { Statistic } from 'src/statistics/entities/statistic.entity';
 
 export class Brand {
   @ApiProperty({ description: '브랜드관리번호' })
@@ -48,4 +49,7 @@ export class Brand {
   @ApiProperty({ description: '가맹사업기준년도' })
   @IsString()
   jngBizCrtraYr: string;
+
+  @ApiProperty({ description: '가맹 사업 현황' })
+  statistics: Statistic[];
 }
