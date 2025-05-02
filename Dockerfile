@@ -13,6 +13,7 @@ FROM base AS builder
   RUN sed -i "s|VAL_DATABASE_URL|$VAL_DATABASE_URL|" ecosystem.config.js
   RUN sed -i "s|VAL_OPENAPI_KEY|$VAL_OPENAPI_KEY|" ecosystem.config.js
   RUN sed -i "s|VAL_DEFAULT_YEAR|$VAL_DEFAULT_YEAR|" ecosystem.config.js
+  RUN npm run prisma:generate
   RUN pnpm build
 
 FROM base AS runner
