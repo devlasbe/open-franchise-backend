@@ -28,8 +28,10 @@ export class OpenApiService {
 
       while (true) {
         const requestAmount = pageNo * numOfRows;
+
+        // 2025년에 corpNm이 추가되어 DB와 로직 호환을 위한 작업 추가
         const response = await this.httpService.axiosRef.get<
-          OpenApiResponseDto<Brand>
+          OpenApiResponseDto<Brand & { corpNm: string }>
         >(endPoint, {
           params: {
             resultType: 'json',
@@ -44,8 +46,12 @@ export class OpenApiService {
           throw new HttpException('공공데이터가 없습니다.', 404);
         }
 
+        const brandlist = response.data.items.map((brand) => {
+          const { corpNm, ...rest } = brand;
+          return rest;
+        });
         const insertBrandResult = await this.prisma.brand.createMany({
-          data: response.data.items,
+          data: brandlist,
           skipDuplicates: true,
         });
         console.log(
@@ -55,7 +61,7 @@ export class OpenApiService {
         if (requestAmount > totalCount) break;
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
