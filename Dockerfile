@@ -29,8 +29,6 @@ RUN npm install -g pm2
 
 COPY --from=builder /app .
 
-RUN pnpm prisma:generate
-
 EXPOSE 3000
 
 CMD ["npm", "run", "pm2:op"]
