@@ -30,10 +30,15 @@ export class OpenApiService {
   private async fetchAndSaveData<T, R>(
     config: ApiCallConfig<T, R>,
     saveFunction: (data: R[]) => Promise<{ count: number }>,
+    deleteFunction?: () => Promise<void>,
   ) {
     const { endpoint, params, transformResponse } = config;
     let pageNo = params.pageNo;
     const numOfRows = params.numOfRows;
+
+    if (deleteFunction) {
+      await deleteFunction();
+    }
 
     while (true) {
       const requestAmount = pageNo * numOfRows;
@@ -86,6 +91,13 @@ export class OpenApiService {
         transformResponse: (items) => items.map(({ corpNm, ...rest }) => rest),
       },
       (data) => this.prisma.brand.createMany({ data, skipDuplicates: true }),
+      async () => {
+        await this.prisma.brand.deleteMany({
+          where: {
+            jngBizCrtraYr: yr.toString(),
+          },
+        });
+      },
     );
   }
 
@@ -100,7 +112,17 @@ export class OpenApiService {
         params: { pageNo, numOfRows, yr },
       },
       (data) =>
-        this.prisma.statistic.createMany({ data, skipDuplicates: true }),
+        this.prisma.statistic.createMany({
+          data,
+          skipDuplicates: true,
+        }),
+      async () => {
+        await this.prisma.statistic.deleteMany({
+          where: {
+            yr: yr.toString(),
+          },
+        });
+      },
     );
   }
 
@@ -113,6 +135,13 @@ export class OpenApiService {
         params: { pageNo, numOfRows, yr },
       },
       (data) => this.prisma.startup.createMany({ data, skipDuplicates: true }),
+      async () => {
+        await this.prisma.startup.deleteMany({
+          where: {
+            yr: yr.toString(),
+          },
+        });
+      },
     );
   }
 }
