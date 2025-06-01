@@ -11,6 +11,7 @@ import { BrandModule } from './brands/brand.module';
 import { StartupsModule } from './startups/startups.module';
 import { InteriorsModule } from './interiors/interiors.module';
 import { HeadsModule } from './heads/heads.module';
+import { RejectedBrandsModule } from './rejected-brands/rejected-brands.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HeadsModule } from './heads/heads.module';
     StartupsModule,
     InteriorsModule,
     HeadsModule,
+    RejectedBrandsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
