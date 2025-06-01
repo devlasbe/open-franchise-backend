@@ -3,7 +3,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { GetBrandListReq } from './dto/brand.dto';
 import { Brand } from './entities/brand.entity';
 import { HeadsService } from 'src/heads/heads.service';
-import { ConfigService } from '@nestjs/config';
 
 const escapeRegex = (str: string) => str.replace(/\//g, '\\/');
 
@@ -12,18 +11,20 @@ export class BrandService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly headsService: HeadsService,
-    private configService: ConfigService,
   ) {}
-  private year = this.configService.get<string>('DEFAULT_YEAR');
 
   async findOne(brandNm: string) {
     const brand = await this.prisma.brand.findUnique({
       where: { brandNm },
       include: { statistics: true },
     });
+    const isRejectedBrand = !!(await this.prisma.rejectedBrand.findFirst({
+      where: { brandNm },
+    }));
+
     if (!brand?.jnghdqrtrsMnno) return { brand, head: {} };
     const head = await this.headsService.findOne(brand.jnghdqrtrsMnno);
-    return { brand, head };
+    return { brand, head, isRejectedBrand };
   }
 
   findByFilter({

@@ -4,7 +4,6 @@ import { PagenationRequest } from 'src/common/dto/pagenation.dto';
 import { TypeUtil } from 'src/common/utils/type.util';
 import { Brand } from '../entities/brand.entity';
 import { Head } from 'src/heads/entities/head.entity';
-import { Statistic } from 'src/statistics/entities/statistic.entity';
 
 export class GetBrandListReq extends PagenationRequest {
   @IsString()
@@ -23,6 +22,8 @@ class BrandRes {
   brand: Brand;
   @ApiProperty({ description: '본사 데이터' })
   head: Head;
+  @ApiProperty({ description: '브랜드 차단 여부' })
+  isRejectedBrand: boolean;
 }
 export class GetBrandRes extends TypeUtil.getSuccessResponse(BrandRes) {}
 export class GetBrandListRes extends TypeUtil.getSuccessResponseList(Brand) {}
