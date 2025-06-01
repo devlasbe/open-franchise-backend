@@ -170,3 +170,10 @@ model Head {
 
   @@index([jnghdqrtrsMnno])
 }
+
+model RejectedBrand {
+  // 브랜드명
+  brandNm String @id @map("brand_nm")
+
+  @@index([brandNm])
+}
