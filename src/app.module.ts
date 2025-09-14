@@ -11,6 +11,8 @@ import { BrandModule } from './brands/brand.module';
 import { StartupsModule } from './startups/startups.module';
 import { InteriorsModule } from './interiors/interiors.module';
 import { HeadsModule } from './heads/heads.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { HeadsModule } from './heads/heads.module';
     StartupsModule,
     InteriorsModule,
     HeadsModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
