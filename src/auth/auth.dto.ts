@@ -12,6 +12,6 @@ export class LoginRequestDto {
 }
 
 export class LoginResponseDto {
-  @ApiProperty({ description: 'JWT 액세스 토큰' })
-  accessToken: string;
+  @ApiProperty({ description: '로그인 성공 메시지' })
+  message: string;
 }

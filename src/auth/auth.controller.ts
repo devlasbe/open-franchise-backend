@@ -1,9 +1,10 @@
-import { Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Response } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginRequestDto, LoginResponseDto } from './auth.dto';
 import { ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { UserWithoutPassword } from 'src/users/users.entity';
 import { LocalAuthGuard } from './guards/LocalAuthGuard';
+import { Response as ExpressResponse } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +25,19 @@ export class AuthController {
     description: '인증 실패',
   })
   @UseGuards(LocalAuthGuard)
-  async login(@Request() req: { user: UserWithoutPassword }) {
-    return this.authService.generateToken(req.user);
+  async login(
+    @Request() req: { user: UserWithoutPassword },
+    @Response() res: ExpressResponse,
+  ) {
+    const { accessToken } = this.authService.generateToken(req.user);
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.json({ message: '로그인 성공' });
   }
 }

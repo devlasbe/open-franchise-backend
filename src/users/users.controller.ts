@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
-  ApiBearerAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -50,7 +49,6 @@ export class UsersController {
 
   @UseGuards(AdminAuthGuard)
   @Get()
-  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: '사용자 목록 조회',
     description: '사용자 목록을 조회합니다.',
