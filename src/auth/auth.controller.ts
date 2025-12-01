@@ -7,12 +7,18 @@ import {
   Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginRequestDto, LoginResponseDto } from './auth.dto';
+import {
+  GetProfileResponseDto,
+  LoginRequestDto,
+  LoginResponseDto,
+  LogoutResponseDto,
+} from './auth.dto';
 import {
   ApiOperation,
   ApiBody,
   ApiResponse,
   ApiBearerAuth,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { UserWithoutPassword } from 'src/users/users.entity';
 import { LocalAuthGuard } from './guards/LocalAuthGuard';
@@ -30,10 +36,9 @@ export class AuthController {
     summary: '프로필 조회',
     description: '로그인된 사용자의 정보를 조회합니다.',
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: '프로필 조회 성공',
-    type: UserWithoutPassword,
+    type: GetProfileResponseDto,
   })
   @ApiResponse({
     status: 401,
@@ -50,8 +55,7 @@ export class AuthController {
     description: '이메일과 비밀번호로 로그인합니다.',
   })
   @ApiBody({ type: LoginRequestDto })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: '로그인 성공',
     type: LoginResponseDto,
   })
@@ -81,9 +85,9 @@ export class AuthController {
     summary: '로그아웃',
     description: '로그아웃하고 쿠키를 삭제합니다.',
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: '로그아웃 성공',
+    type: LogoutResponseDto,
   })
   async logout(@Response() res: ExpressResponse) {
     res.clearCookie('accessToken', {

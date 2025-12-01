@@ -168,6 +168,7 @@ src/
 
 - 단일 응답: `TypeUtil.getSuccessResponse(EntityType)`
 - 리스트 응답: `TypeUtil.getSuccessResponseList(EntityType)`
+- **모든 성공 응답은 반드시 TypeUtil을 상속받아야 함 (단순 메시지 포함)**
 
 ```typescript
 export class GetBrandRes extends TypeUtil.getSuccessResponse(BrandRes) {}
