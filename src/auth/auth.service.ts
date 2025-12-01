@@ -27,4 +27,8 @@ export class AuthService {
     }
     return null;
   }
+
+  async getProfile(id: string) {
+    return this.usersService.findById(id);
+  }
 }
