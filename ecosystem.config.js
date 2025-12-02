@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'franchise-backend',
-      script: './dist/main.js',
+      script: './dist/src/main.js',
       exec_mode: 'cluster',
       instances: '2', // CPU 코어 수
       max_memory_restart: '1000M', // 프로세스의 메모리가 1000MB에 도달하면 reload 실행

@@ -11,7 +11,7 @@
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "pm2:dev": "pm2-runtime start ecosystem.config.js",
     "pm2:op": "pm2-runtime start ecosystem.config.js --env production"
