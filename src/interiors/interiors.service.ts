@@ -4,6 +4,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { OpenApiResponseDto } from 'src/openApis/dto/openApi.dto';
 import { Interior } from './entities/interior.entity';
+import constants from 'src/common/constants';
 
 @Injectable()
 export class InteriorsService {
@@ -14,8 +15,7 @@ export class InteriorsService {
   ) {}
   private key = this.configService.get<string>('OPENAPI_KEY');
   private year = this.configService.get<string>('DEFAULT_YEAR');
-  private endPoint =
-    'https://apis.data.go.kr/1130000/FftcBrandFrcsIntInfo2_Service/getbrandFrcsBzmnIntrrctinfo';
+  private endPoint = constants.OPENAPI_INTERIOR_ENDPOINT;
 
   create(data: Interior) {
     try {
