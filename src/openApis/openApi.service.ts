@@ -9,6 +9,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { HttpService } from '@nestjs/axios';
 import { Brand } from 'src/brands/entities/brand.entity';
 import { Statistic, Startup } from '@prisma/client';
+import constants from 'src/common/constants';
 
 interface ApiCallConfig<T, R> {
   endpoint: string;
@@ -76,8 +77,7 @@ export class OpenApiService {
   }
 
   async callBrand({ pageNo, numOfRows, yr }: OpenApiRequestDto) {
-    const endpoint =
-      'https://apis.data.go.kr/1130000/FftcBrandRlsInfo2_Service/getBrandinfo';
+    const endpoint = constants.OPENAPI_BRAND_ENDPOINT;
 
     await this.fetchAndSaveData<Brand & { corpNm: string }, Brand>(
       {
@@ -101,9 +101,7 @@ export class OpenApiService {
   }
 
   async callStatistic({ pageNo, numOfRows, yr }: OpenApiRequestDto) {
-    const endpoint = this.configService.get<string>(
-      'OPENAPI_STATISTIC_ENDPOINT',
-    );
+    const endpoint = constants.OPENAPI_STATISTIC_ENDPOINT;
 
     await this.fetchAndSaveData<StatisticResponseDto['items'][0], Statistic>(
       {
@@ -125,7 +123,7 @@ export class OpenApiService {
   }
 
   async callStartup({ pageNo, numOfRows, yr }: OpenApiRequestDto) {
-    const endpoint = this.configService.get<string>('OPENAPI_STARTUP_ENDPOINT');
+    const endpoint = constants.OPENAPI_STARTUP_ENDPOINT;
 
     await this.fetchAndSaveData<StartupResponseDto['items'][0], Startup>(
       {
