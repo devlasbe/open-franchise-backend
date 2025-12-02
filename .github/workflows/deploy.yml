@@ -35,6 +35,7 @@ jobs:
             VAL_DATABASE_URL=${{secrets.VAL_DATABASE_URL}}
             VAL_OPENAPI_KEY=${{secrets.VAL_OPENAPI_KEY}}
             VAL_DEFAULT_YEAR=${{secrets.VAL_DEFAULT_YEAR}}
+            VAL_JWT_SECRET=${{secrets.VAL_JWT_SECRET}}
 
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
