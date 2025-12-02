@@ -15,9 +15,12 @@ COPY . .
 ARG VAL_DATABASE_URL
 ARG VAL_OPENAPI_KEY
 ARG VAL_DEFAULT_YEAR
+ARG VAL_JWT_SECRET
+
 RUN sed -i "s|VAL_DATABASE_URL|$VAL_DATABASE_URL|" ecosystem.config.js
 RUN sed -i "s|VAL_OPENAPI_KEY|$VAL_OPENAPI_KEY|" ecosystem.config.js
 RUN sed -i "s|VAL_DEFAULT_YEAR|$VAL_DEFAULT_YEAR|" ecosystem.config.js
+RUN sed -i "s|VAL_JWT_SECRET|$VAL_JWT_SECRET|" ecosystem.config.js
 
 RUN pnpm prisma:generate
 RUN pnpm build

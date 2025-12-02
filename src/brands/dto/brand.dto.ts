@@ -27,3 +27,18 @@ class BrandRes {
 }
 export class GetBrandRes extends TypeUtil.getSuccessResponse(BrandRes) {}
 export class GetBrandListRes extends TypeUtil.getSuccessResponseList(Brand) {}
+
+export class AddRejectedBrandDto {
+  @IsString()
+  @ApiProperty({ description: '브랜드 명', example: '나쁜브랜드' })
+  brandNm: string;
+}
+
+export class RejectedBrand {
+  @ApiProperty({ description: '브랜드 명' })
+  brandNm: string;
+}
+
+export class GetRejectedBrandListRes extends TypeUtil.getSuccessResponseList(
+  RejectedBrand,
+) {}

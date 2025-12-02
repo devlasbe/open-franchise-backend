@@ -63,4 +63,23 @@ export class BrandService {
   findAll() {
     return this.prisma.brand.findMany();
   }
+
+  async findAllRejected({ pageNo, pageSize, name }: GetBrandListReq) {
+    const where: any = {};
+    if (name) where.brandNm = { contains: name, mode: 'insensitive' };
+
+    return this.prisma.rejectedBrand.findMany({
+      skip: (pageNo - 1) * pageSize,
+      take: pageSize,
+      where,
+    });
+  }
+
+  async addRejected(brandNm: string) {
+    return this.prisma.rejectedBrand.create({ data: { brandNm } });
+  }
+
+  async removeRejected(brandNm: string) {
+    return this.prisma.rejectedBrand.delete({ where: { brandNm } });
+  }
 }

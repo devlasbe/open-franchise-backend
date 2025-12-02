@@ -4,11 +4,14 @@ import { ErrorResponseInterceptor } from './common/interceptors/error-response/e
 import { SuccessResponseInterceptor } from './common/interceptors/success-response/success-response.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('franchise');
+
+  app.use(cookieParser());
 
   app.useGlobalInterceptors(new ErrorResponseInterceptor());
   app.useGlobalInterceptors(new SuccessResponseInterceptor());
@@ -23,6 +26,7 @@ async function bootstrap() {
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
   });
 
   /* Swagger Setting */

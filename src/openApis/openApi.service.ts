@@ -29,16 +29,11 @@ export class OpenApiService {
 
   private async fetchAndSaveData<T, R>(
     config: ApiCallConfig<T, R>,
-    saveFunction: (data: R[]) => Promise<{ count: number }>,
-    deleteFunction?: () => Promise<void>,
+    saveFunction: (data: R[]) => Promise<any>,
   ) {
     const { endpoint, params, transformResponse } = config;
     let pageNo = params.pageNo;
     const numOfRows = params.numOfRows;
-
-    if (deleteFunction) {
-      await deleteFunction();
-    }
 
     while (true) {
       const requestAmount = pageNo * numOfRows;
@@ -68,7 +63,7 @@ export class OpenApiService {
         const result = await saveFunction(items);
 
         this.logger.log(
-          `${(pageNo - 1) * numOfRows + 1}~${pageNo * numOfRows} / total: ${totalCount} / saved ${result.count}`,
+          `${(pageNo - 1) * numOfRows + 1}~${pageNo * numOfRows} / total: ${totalCount}`,
         );
 
         pageNo = pageNo + 1;
@@ -90,13 +85,17 @@ export class OpenApiService {
         params: { pageNo, numOfRows, jngBizCrtraYr: yr },
         transformResponse: (items) => items.map(({ corpNm, ...rest }) => rest),
       },
-      (data) => this.prisma.brand.createMany({ data, skipDuplicates: true }),
-      async () => {
-        await this.prisma.brand.deleteMany({
-          where: {
-            jngBizCrtraYr: yr.toString(),
-          },
-        });
+      async (data) => {
+        await Promise.all(
+          data.map((item) => {
+            const { statistics, ...rest } = item;
+            return this.prisma.brand.upsert({
+              where: { brandNm: rest.brandNm },
+              update: rest,
+              create: rest,
+            });
+          }),
+        );
       },
     );
   }
@@ -111,17 +110,16 @@ export class OpenApiService {
         endpoint,
         params: { pageNo, numOfRows, yr },
       },
-      (data) =>
-        this.prisma.statistic.createMany({
-          data,
-          skipDuplicates: true,
-        }),
-      async () => {
-        await this.prisma.statistic.deleteMany({
-          where: {
-            yr: yr.toString(),
-          },
-        });
+      async (data) => {
+        await Promise.all(
+          data.map((item) => {
+            return this.prisma.statistic.upsert({
+              where: { brandNm_yr: { brandNm: item.brandNm, yr: item.yr } },
+              update: item,
+              create: item,
+            });
+          }),
+        );
       },
     );
   }
@@ -134,13 +132,16 @@ export class OpenApiService {
         endpoint,
         params: { pageNo, numOfRows, yr },
       },
-      (data) => this.prisma.startup.createMany({ data, skipDuplicates: true }),
-      async () => {
-        await this.prisma.startup.deleteMany({
-          where: {
-            yr: yr.toString(),
-          },
-        });
+      async (data) => {
+        await Promise.all(
+          data.map((item) => {
+            return this.prisma.startup.upsert({
+              where: { brandNm: item.brandNm },
+              update: item,
+              create: item,
+            });
+          }),
+        );
       },
     );
   }
