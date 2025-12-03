@@ -12,15 +12,6 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN pnpm i --frozen-lockfile
 
 COPY . .
-ARG VAL_DATABASE_URL
-ARG VAL_OPENAPI_KEY
-ARG VAL_DEFAULT_YEAR
-ARG VAL_JWT_SECRET
-
-RUN sed -i "s|VAL_DATABASE_URL|$VAL_DATABASE_URL|" ecosystem.config.js
-RUN sed -i "s|VAL_OPENAPI_KEY|$VAL_OPENAPI_KEY|" ecosystem.config.js
-RUN sed -i "s|VAL_DEFAULT_YEAR|$VAL_DEFAULT_YEAR|" ecosystem.config.js
-RUN sed -i "s|VAL_JWT_SECRET|$VAL_JWT_SECRET|" ecosystem.config.js
 
 RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" pnpm prisma:generate
 RUN pnpm build
@@ -34,4 +25,4 @@ COPY --from=builder /app .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "pm2:op"]
+CMD ["/bin/sh", "-c", "npx prisma migrate deploy && npm run pm2:prod"]

@@ -10,9 +10,6 @@ jobs:
     env:
       DOCKER_IMAGE_TAG: ${{ secrets.DOCKER_REPOSITORY }}/${{secrets.DOCKER_IMAGENAME}}:latest
     steps:
-      - name: env test
-        run: echo "DOCKER_IMAGE_TAG $DOCKER_IMAGE_TAG"
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -31,11 +28,6 @@ jobs:
         with:
           push: true
           tags: ${{ env.DOCKER_IMAGE_TAG }}
-          build-args: |
-            VAL_DATABASE_URL=${{secrets.VAL_DATABASE_URL}}
-            VAL_OPENAPI_KEY=${{secrets.VAL_OPENAPI_KEY}}
-            VAL_DEFAULT_YEAR=${{secrets.VAL_DEFAULT_YEAR}}
-            VAL_JWT_SECRET=${{secrets.VAL_JWT_SECRET}}
 
       - name: execute remote ssh
         uses: appleboy/ssh-action@master
@@ -45,8 +37,23 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.SERVER_KEY }}
           script: |
+            echo "Login to Docker Registry..."
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            echo "Pulling latest image..."
             docker pull ${{ env.DOCKER_IMAGE_TAG }}
-            docker stop ${{secrets.DOCKER_IMAGENAME}} || true
-            docker rm ${{secrets.DOCKER_IMAGENAME}} || true
-            docker run -d --restart=always --name ${{secrets.DOCKER_IMAGENAME}} -p 3001:3000 ${{ env.DOCKER_IMAGE_TAG }}
+
+            echo "Removing old container..."
+            docker stop ${{ secrets.DOCKER_IMAGENAME }} || true
+            docker rm ${{ secrets.DOCKER_IMAGENAME }} || true
+
+            echo "Starting new container with Environment Variables..."
+            docker run -d \
+              --restart=always \
+              --name ${{ secrets.DOCKER_IMAGENAME }} \
+              -p 3001:3000 \
+              -e DATABASE_URL='${{ secrets.VAL_DATABASE_URL }}' \
+              -e OPENAPI_KEY='${{ secrets.VAL_OPENAPI_KEY }}' \
+              -e DEFAULT_YEAR='${{ secrets.VAL_DEFAULT_YEAR }}' \
+              -e JWT_SECRET='${{ secrets.VAL_JWT_SECRET }}' \
+              ${{ env.DOCKER_IMAGE_TAG }}
